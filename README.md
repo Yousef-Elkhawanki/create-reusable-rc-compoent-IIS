@@ -13,13 +13,15 @@ This Repository Contains A **React Table Component** And **Pure Js Web Component
 ---
 
 ## 2. File In React App Before Build Component
+```pgsql
 
 1. Create App , For Example:
-   |_ src
-   |** index.jsx -> Entry Point
-   |** shared-table.jsx -> Web Component
-   |\_\_ Table.jsx -> React Reusable Component
-   |_ vite.config.js
+   src
+ ├─ index.jsx        # (Exports React & Web Component)
+ ├─ shared-table.jsx # Web Component
+ └─ Table.jsx        # React Reusable Component
+```
+
 
 ---
 
@@ -27,14 +29,15 @@ This Repository Contains A **React Table Component** And **Pure Js Web Component
 
 -   1. index.jsx
 
-```python
-export {default as Table} from "./Table.jsx"; // React Component
-import "./shared-table.jsx" // Web Component
+```js
+export { default as Table } from "./Table.jsx"; // React Component
+import "./shared-table.jsx"; // Web Component
+
 ```
 
 -   2. table.jsx
 
-```python
+```js
 const Table = () => {
   return (
       <div>Add Your Table Code 😄</div>
@@ -46,51 +49,56 @@ export default Table
 
 -   3. shared-table.jsx
 
-```python
+```js
 class SharedTable extends HTMLElement {
     connectedCallback(){
         this.innerHTML = `
         <table border="1" style="border-collapse:collapse;width:100%">
-        <thead><tr></tr></thead>
-        <tbody></tbody>
+          <thead><tr></tr></thead>
+          <tbody></tbody>
         </table>
-
-        `
+        `;
     }
+
     set data(value){
-        this._data=value;
+        this._data = value;
         this._render();
     }
+
     _render(){
         const table = this.querySelector("table");
         const thead = this.querySelector("thead");
         const tbody = this.querySelector("tbody");
-        thead.innerHTML ="";
+        thead.innerHTML = "";
+
         if(this._data?.length){
             Object.keys(this._data[0]).forEach((key)=>{
                 const th = document.createElement("th");
-                th.textContnent = key;
-                thead.appendChild(th)
-            })
+                th.textContent = key;
+                thead.appendChild(th);
+            });
         }
-        tbody.innerHTML ="";
-        if(this._data.forEach((row)=>{
-            const td = document.createElement("tr")
+
+        tbody.innerHTML = "";
+        this._data.forEach((row)=>{
+            const tr = document.createElement("tr");
             Object.values(row).forEach((val)=>{
                 const td = document.createElement("td");
-                td.textContent =val;
-                tr.appendChild(td)
-            }) ;
-            tbody.appendChild(tr)
-        }))
+                td.textContent = val;
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
     }
 }
-customeElements.define("shared-table", SharedTable)
+
+customElements.define("shared-table", SharedTable);
+
 ```
 
 -   4. vite.config.js
 
-```python
+```js
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -103,7 +111,7 @@ export default defineConfig({
             fileName: (format) => `shared-table.${format}.js`,
             formats: ["umd", "es"],
         },
-        roullupOptions: {
+        rollupOptions: {
             external: ["react", "react-dom"],
         },
         define: {
@@ -112,20 +120,21 @@ export default defineConfig({
     },
 });
 
+
 ```
 
 ---
 
 ## 4. File On Server
-
+```pgsql
 1. Add File On The Server , For Example:
-   C:\inetpub\wwwwroot\table
-   |_ index.html -> HTML App
-   |_ main-app -> react app
-   |\_ dist
-   |** shared-table.es.js
-   |** shared-table.umd.js
-
+C:\inetpub\wwwroot\table
+ ├─ index.html       # صفحة HTML
+ ├─ main-app         # مشروع React
+ └─ dist
+     ├─ shared-table.es.js
+     └─ shared-table.umd.js
+```
 ---
 
 ## 5. How To Use ?
