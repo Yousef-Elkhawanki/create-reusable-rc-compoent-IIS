@@ -88,9 +88,35 @@ class SharedTable extends HTMLElement {
 customeElements.define("shared-table", SharedTable)
 ```
 
+-   4. vite.config.js
+
+```python
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+    plugins: [react()],
+    build: {
+        lib: {
+            entry: "./src/index.jsx",
+            name: "SharedTable",
+            fileName: (format) => `shared-table.${format}.js`,
+            formats: ["umd", "es"],
+        },
+        roullupOptions: {
+            external: ["react", "react-dom"],
+        },
+        define: {
+            "process.env.NODE_ENV": JSON.stringify("production"),
+        },
+    },
+});
+
+```
+
 ---
 
-## 2. File On Server
+## 4. File On Server
 
 1. Add File On The Server , For Example:
    C:\inetpub\wwwwroot\table
@@ -102,9 +128,9 @@ customeElements.define("shared-table", SharedTable)
 
 ---
 
-## 3. How To Use ?
+## 5. How To Use ?
 
 -   1. In IIS Or HTML [View Source Code](./index.html)
--   2. In React App [View Source Code](./react-app/SharedTable.jsx)
+-   2. In React App [View Source Code](./react-app/src/App.jsx)
 
 ---
